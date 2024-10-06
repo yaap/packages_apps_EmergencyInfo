@@ -15,25 +15,14 @@
  */
 package com.android.emergency.view;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
 import android.os.UserHandle;
 import android.os.UserManager;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener;
-import com.google.android.material.tabs.TabLayout.ViewPagerOnTabSelectedListener;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.preference.PreferenceManager;
-
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -48,6 +37,17 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 import android.widget.ViewFlipper;
 
+import androidx.annotation.LayoutRes;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.preference.PreferenceManager;
+import androidx.viewpager.widget.ViewPager;
+
 import com.android.emergency.CircleFramedDrawable;
 import com.android.emergency.R;
 import com.android.emergency.edit.EditInfoActivity;
@@ -56,6 +56,9 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.internal.util.UserIcons;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener;
+import com.google.android.material.tabs.TabLayout.ViewPagerOnTabSelectedListener;
 
 import java.util.ArrayList;
 
@@ -89,6 +92,19 @@ public class ViewInfoActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_activity_layout);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_layout), (view, insets) -> {
+            Insets systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            view.setPadding(
+                view.getPaddingLeft(),
+                systemInsets.top,
+                view.getPaddingRight(),
+                systemInsets.bottom
+            );
+            return insets;
+        });
+
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mPersonalCard = (LinearLayout) findViewById(R.id.name_and_dob_linear_layout);
         mPersonalCardLargeIcon = (ImageView) findViewById(R.id.personal_card_icon);

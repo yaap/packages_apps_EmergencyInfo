@@ -15,19 +15,20 @@
  */
 package com.android.emergency.edit;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 
+import com.android.emergency.BaseActivity;
 import com.android.internal.annotations.VisibleForTesting;
 
 /** Activity for editing medical information. */
-public class EditMedicalInfoActivity extends Activity {
+public class EditMedicalInfoActivity extends BaseActivity {
     private EditMedicalInfoFragment mEditInfoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupInsets(findViewById(android.R.id.content));
         // We only add a new EditInfoFragment if no fragment is restored.
         Fragment fragment = getFragmentManager().findFragmentById(android.R.id.content);
         if (fragment == null) {

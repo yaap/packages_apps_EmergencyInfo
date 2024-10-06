@@ -17,7 +17,6 @@ package com.android.emergency.edit;
 
 import static android.view.WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -34,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.android.emergency.BaseActivity;
 import com.android.emergency.PreferenceKeys;
 import com.android.emergency.R;
 import com.android.emergency.overlay.FeatureFactory;
@@ -48,7 +48,7 @@ import java.util.ArrayList;
 /**
  * Activity for editing emergency information.
  */
-public class EditInfoActivity extends Activity {
+public class EditInfoActivity extends BaseActivity {
     static final String TAG_CLEAR_ALL_DIALOG = "clear_all_dialog";
 
     private EditInfoFragment mEditInfoFragment;
@@ -64,6 +64,8 @@ public class EditInfoActivity extends Activity {
                 PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setupInsets(findViewById(android.R.id.content));
 
         // We only add a new EditInfoFragment if no fragment is restored.
         Fragment fragment = getFragmentManager().findFragmentById(android.R.id.content);
